@@ -39,24 +39,88 @@ async function addTodoButtonclick() {
 onMount(() => {
 	getTodos();
 });
+
+// Close todo item
+async function removeTodoButtonClick(todoItem: TodoItem) {
+	const removeTodoItemRequest: RemoveTodoItemRequest = {
+		todoItem: todoItem,
+	};
+	const removeTodoItemRequestJson = JSON.stringify(removeTodoItemRequest);
+	// API call
+	const response = await fetch("http://localhost:3000/remove-todo-item", {
+		method: "DELETE", 
+		headers: {
+			"Content-Type": "application/json",
+			mode: "no-cors",
+		},
+		body: removeTodoItemRequestJson,
+	});
+	console.log("FRONT END REMOVE");
+	console.log(response);
+	console.log(todos);
+	getTodos();
+	console.log("FRONT END REMOVE DONE");
+
+}
+
 </script>
 
-<h1>POGGERS To-do list</h1>
+<h1>My To-do List App</h1>
 
 <label for="new-todo-description">Description</label>
 <input name="new-todo-description" bind:value={newTodoDescription}/>
 <button on:click={addTodoButtonclick}>Add new todo</button>
 
-{#each todos as todo}
+<!-- {#each todos as todo}
 	<div class="todo-item">[{todo.isDone ? "X" : " "}] {todo.description}</div>
-{/each}
-
+{/each} -->
+<div class="todo-list-container"> 
+	<span class="todo-list-title">My Todos:</span>
+	{#each todos as todo}
+		<div class="todo-item">
+			<input type="checkbox" bind:checked={todo.isDone}/>
+			<span class="todo-description">{todo.description}</span>
+			<button class="remove" on:click={() => removeTodoButtonClick(todo)}>x</button>	
+		</div>
+	{/each}
+</div> 
 
 <style>
+	.todo-list-container {
+		background-color: rgb(169, 197, 250);
+		font-family: 'Courier New', Courier, monospace;
+		width: 400px;
+		margin: 10px;
+		padding: 30px;
+	}
+
+	.todo-list-title {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
 	.todo-item {
-		background-color: cornflowerblue;
-		width: 200px;
-		margin: 5px;
-		padding: 10px;
+		display: flex;
+		align-items: center;
+		margin: 5px 0;
+		padding: 5px;
+	}
+
+	.todo-item
+
+	.todo-item input {
+		cursor: pointer;
+		margin: 0;
+	}
+
+	.todo-description {
+		flex-grow: 1;
+		margin-left: 10px;
+		font-size: 16px;
+	}
+
+	.remove {
+		margin-left: auto;
+		cursor: pointer;
 	}
 </style>
