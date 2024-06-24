@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express";
-import type { TodoItem, CreateTodoItemRequest } from "./types";
+import type { TodoItem, CreateTodoItemRequest, RemoveTodoItemRequest } from "./types";
 // import cors from "cors";
 import cors from "cors";
 
@@ -37,6 +37,21 @@ app.post("/todo-item", (req: Request, res: Response) => {
 app.get("/todo-item", (req: Request, res: Response) => {
 	res.setHeader("Access-Control-Allow-Origin", "*").status(200).json(todos);
 });
+
+// Remove a todo item
+app.delete("/remove-todo-item", (req: Request, res: Response) => {
+	const removedTodoItemRequest: RemoveTodoItemRequest = req.body;
+
+	// Remove the item NEED ERROR HANDLING FIRST
+	//let index = removedTodoItemRequest.id;
+	let index = todos.indexOf(removedTodoItemRequest.todoItem);
+	let removedTodoItem = todos.splice(index, 1);
+	console.log("Removed:", {removedTodoItem});
+
+	res.setHeader("Access-Control-Allow-Origin", "*")
+	.status(200)
+	.send(todos);
+})
 
 app.get("/", (req: Request, res: Response) => {
 	res
