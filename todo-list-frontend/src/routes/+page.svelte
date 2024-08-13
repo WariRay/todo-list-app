@@ -83,7 +83,9 @@ async function removeTodoButtonClick(todoItem: TodoItem) {
 			<button class="remove" on:click={() => removeTodoButtonClick(todo)}>x</button>	
 		</div>
 	{/each}
-</div> 
+	<span class="todo-list-length">Number of Items {todos.length}</span>
+</div>
+
 
 <style>
 	.todo-list-container {
@@ -122,5 +124,9 @@ async function removeTodoButtonClick(todoItem: TodoItem) {
 	.remove {
 		margin-left: auto;
 		cursor: pointer;
+	}
+
+	.todo-list-length {
+		margin-left: 100px;
 	}
 </style>
